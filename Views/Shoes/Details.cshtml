@@ -1,0 +1,144 @@
+﻿@model ShoesStoreWebsite.Models.Shoes
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+<div style="display: flex; margin-top:20px">
+    @* left *@
+    <div style="width: 50%; margin-right: 100px">
+        <div >
+            <img src="@Model.URLImage" class="card-img-top" style="max-width: full ;  height: 600px;">
+        </div>
+        <div style="margin-top: 40px">
+            <p style="font-size: 20px; font-weight: bold;">Product Details</p>
+            <table style="border: 1px solid #ccc; padding: 50px;">
+                <tr>
+                    <td style="border-bottom: 1px solid #ccc;"><strong>Brand</strong></td>
+                    <td style="border-bottom: 1px solid #ccc;">@Model.Brand</td>
+                </tr>
+                <tr>
+                    <td style="border-bottom: 1px solid #ccc;"><strong>Category</strong></td>
+                    <td style="border-bottom: 1px solid #ccc;">@Model.Category</td>
+                </tr>
+                <tr>
+                    <td style="border-bottom: 1px solid #ccc;"><strong>Name</strong></td>
+                    <td style="border-bottom: 1px solid #ccc;">@Model.Name</td>
+                </tr>
+                <tr>
+                    <td style="border-bottom: 1px solid #ccc;"><strong>Gender</strong></td>
+                    <td style="border-bottom: 1px solid #ccc;">@Model.Gender</td>
+                </tr>
+                <tr>
+                    <td style="border-bottom: 1px solid #ccc;"><strong>Material</strong></td>
+                    <td style="border-bottom: 1px solid #ccc;">@Model.Material</td>
+                </tr>
+                <tr>
+                    <td style="border-bottom: 1px solid #ccc;"><strong>Sole</strong></td>
+                    <td style="border-bottom: 1px solid #ccc;">@Model.Sole</td>
+                </tr>
+                <tr>
+                    <td style="border-bottom: 1px solid #ccc;"><strong>Storagen Instructions</strong></td>
+                    <td style="border-bottom: 1px solid #ccc;">@Model.Storagen_Instructions</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @* right *@
+    <div style="width: 50%;">
+        <b style="font-size: 30px;">@Model.Name</b>
+        <p style="font-size: 30px;">@Model.Price</p>
+        <div class="form-group">
+            <label for="size" style="font-size: 20px; margin-bottom: 10px">Size Chart</label><br />
+            @foreach (var size in Model.Size.Split(','))
+            {
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group" >
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                    <label class="btn btn-outline-secondary" style="width: 90px" for="btnradio1">36</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                    <label class="btn btn-outline-secondary mx-2" style="width: 90px" for="btnradio2">37</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                    <label class="btn btn-outline-secondary " style="width: 90px" for="btnradio3">38</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+                    <label class="btn btn-outline-secondary  mx-2" style="width: 90px" for="btnradio4">39</label>
+
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+                    <label class="btn btn-outline-secondary" style="width: 90px" for="btnradio5">40</label>
+                </div>
+
+            }
+            <input type="hidden" id="selectedSize" name="Size" />
+        </div>
+
+        <!--AddProduct-->
+        <form method="post" asp-controller="Cart" asp-action="Add" class="form-inline">
+            <div class="form-group">
+                <input type="hidden" name="id" value="@Model.Id" />
+            </div>
+
+            <button type="submit" class="btn btn-outline-dark" style="margin-top: 20px; background-color: white; border-color: black;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
+                    <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z" />
+                    <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                </svg>
+            </button>
+        </form>
+
+
+        <!--AddComment-->
+        <div class="mt-5">
+            <form asp-action="AddComment" asp-controller="Shoes" method="post" onsubmit="return ConfirmComment()">
+                <input type="hidden" name="shoesId" value="@Model.Id" />
+                <div class="form-group">
+                    <textarea name="comment" placeholder="comment" class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3 mb-5">Comment</button>
+            </form>
+
+        </div>
+
+        <!-- Display Comments Section -->
+        <div>
+            <h4>Reviews</h4>
+            @if (Model.Comments != null && Model.Comments.Any())
+            {
+                foreach (var comment in Model.Comments)
+                {
+                    <div class="comment" style="background-color: #f0f2f5; border-radius: 8px; padding: 10px; margin-bottom: 20px;">
+                        <p style="font-size: 15px; font-weight: bold;">@User.Identity.Name</p>
+                        <p class="mt-2">@comment.Content</p>
+                        <p>@comment.CreatedDate.ToString("MM/dd/yyyy hh:mm tt")</p>
+                        <form asp-action="DeleteComment" asp-controller="Shoes" method="post">
+                            <input type="hidden" name="commentId" value="@comment.Id" />
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            }
+                        </form>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No comments available.</p>
+            }
+        </div>
+
+        
+
+
+        
+    </div>
+</div>
+
+<script>
+    function ConfirmComment() {
+        return confirm("Once sent, can't be deleted. Think carefully! Continue?");
+    }
+</script>

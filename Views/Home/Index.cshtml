@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ShoesStoreWebsite.Models.Shoes>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="">
+
+    <div>
+        <h1>SHOES</h1>
+    </div>
+
+    <div>
+        <img src="https://cdn.authentic-shoes.com/wp-content/uploads/2023/09/image-54-2048x711-2.webp" style="max-width:full;height:450px" />
+        @* <img src="https://cdn.authentic-shoes.com/wp-content/uploads/2024/01/AJ1_Yellow_Ochre_Release_DayPrim-2048x625.webp" style="max-width:full;height:396px" /> *@
+
+    </div>
+    @* SHOES *@
+    <div class="row" style="overflow-x: auto;">
+        <div class="d-flex flex-nowrap my-5">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-2">
+                    <a href="@Url.Action("Details", "Shoes", new { id = item.Id })" style="text-decoration: none;">
+                        <div class="card mb-3 box-shadow cursor-pointer hover" style="transition: all 0.3s ease;">
+                            <div class="card-body">
+                                <div class="text-center mb-3">
+                                    <img src="@item.URLImage" class="card-img-top" style="max-width: 100%; height: auto;">
+                                </div>
+                                <div class="text-left">
+                                    <div class="mb-2" style="line-height: 1">
+                                        <p class="card-text" style="font-size: 18px; font-weight: bold; color: black;">@Html.DisplayFor(modelItem => item.Name)</p>
+                                        <p class="card-text" style="color: black;">Genre: @Html.DisplayFor(modelItem => item.Gender)</p>
+                                        <p class="card-text" style="color: black;">Price: @Html.DisplayFor(modelItem => item.Price)</p>
+                                    </div>
+                                   @*  <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <span class="details-link">Details</span>
+                                    </div> *@
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+
+  
+
+
+<style>
+    .cursor-pointer:hover {
+        cursor: pointer;
+        transform: translateY(-5px); /* dich chuyen */
+    }
+    .hover:hover{
+        background-color: #DDDDDD;
+    }
+    .aa{
+        background: rgb(112, 168, 242);
+    }
+   
+</style>

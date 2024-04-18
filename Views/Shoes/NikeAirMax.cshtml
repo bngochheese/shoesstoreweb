@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ShoesStoreWebsite.Models.Shoes>
+
+@* CATEGORY AND SEARCH *@
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px">
+    <div style="width: 50%; ">
+        <h2>Nike Air Max</h2>
+    </div>
+    <div style="width: 50%; ">
+        <form asp-controller="Shoes" asp-action="NikeAirMax" method="get">
+            <div style="display: flex; align-items: center;">
+                <input type="text" style="border: 1px solid #ccc; border-radius: 4px; padding: 8px 12px; margin-right: 10px; font-size: 14px; flex: 1; max-width: full" name="searchString" placeholder="Name">
+                <button type="submit" style="background-color: #007bff; color: #fff; border: none; border-radius: 4px; padding: 8px 20px; font-size: 14px; cursor: pointer; transition: background-color 0.3s;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@* SHOES *@
+<div class="row" style="overflow-x: auto;">
+    <div class="d-flex flex-nowrap" style="margin: 5px">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-2" style="margin: 5px">
+                <a href="@Url.Action("Details", "Shoes", new { id = item.Id })" style="text-decoration: none;">
+                    <div class="card mb-3 box-shadow cursor-pointer hover" style="transition: all 0.3s ease;">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <img src="@item.URLImage" class="card-img-top" style="max-width: 100%; height: auto;">
+                            </div>
+                            <div class="text-left">
+                                <div class="mb-2" style="line-height: 1">
+                                    <p class="card-text" style="font-size: 18px; font-weight: bold; color: black;">@Html.DisplayFor(modelItem => item.Name)</p>
+                                    <p class="card-text" style="color: black;">Genre: @Html.DisplayFor(modelItem => item.Gender)</p>
+                                    <p class="card-text" style="color: black;">Price: @Html.DisplayFor(modelItem => item.Price)</p>
+                                </div>
+                               @*  <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <span class="details-link">Details</span>
+                                </div> *@
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @if (ViewBag.TotalShoes != null && ViewBag.PageSize != null && ViewBag.Page != null)
+            {
+                int totalPages = (int)Math.Ceiling((double)ViewBag.TotalShoes / ViewBag.PageSize);
+                for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("NikeAirMax", new { page = i })">@i</a>
+                    </li>
+                }
+            }
+        </ul>
+    </nav>
+</div>
+
